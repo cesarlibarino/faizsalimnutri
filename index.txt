@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Faiz Salim | Consulta Nutricional Personalizada</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --black:#070707;
+      --black2:#111111;
+      --gray:#1b1b1b;
+      --text:#f7f7f7;
+      --muted:#b6b6b6;
+      --red:#ff3b30;
+      --orange:#ff8a00;
+      --yellow:#ffd166;
+      --white:#ffffff;
+      --line:rgba(255,255,255,.12);
+      --shadow:0 30px 90px rgba(0,0,0,.35);
+      --transition:all .35s cubic-bezier(.25,1,.5,1);
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{
+      font-family:'Inter',sans-serif;
+      background:var(--black);
+      color:var(--text);
+      overflow-x:hidden;
+      -webkit-font-smoothing:antialiased;
+    }
+    a{text-decoration:none;color:inherit;}
+    img{display:block;max-width:100%;}
+    .container{width:100%;max-width:1160px;margin:0 auto;padding:0 24px;}
+    section{position:relative;padding:92px 0;overflow:hidden;}
+
+    .noise{
+      position:fixed;inset:0;pointer-events:none;opacity:.06;z-index:1;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 250 250' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.7'/%3E%3C/svg%3E");
+    }
+    .glow{position:absolute;width:420px;height:420px;border-radius:999px;filter:blur(90px);pointer-events:none;opacity:.55;}
+    .glow.red{background:rgba(255,59,48,.24);}
+    .glow.orange{background:rgba(255,138,0,.18);}
+
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:10px;
+      background:linear-gradient(135deg,var(--orange),var(--red));
+      color:white;border:0;padding:18px 30px;border-radius:999px;
+      text-transform:uppercase;letter-spacing:1px;font-size:13px;font-weight:900;
+      box-shadow:0 18px 45px rgba(255,59,48,.28);transition:var(--transition);
+    }
+    .btn:hover{transform:translateY(-4px);box-shadow:0 24px 65px rgba(255,59,48,.38);}
+    .btn.secondary{background:rgba(255,255,255,.08);border:1px solid var(--line);box-shadow:none;color:white;}
+    .btn.secondary:hover{background:rgba(255,255,255,.13);}
+
+    .tag{
+      display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border-radius:999px;
+      background:rgba(255,138,0,.12);border:1px solid rgba(255,138,0,.25);color:var(--yellow);
+      text-transform:uppercase;letter-spacing:2px;font-size:10px;font-weight:900;
+    }
+    .tag::before{content:"";width:7px;height:7px;background:var(--orange);border-radius:999px;box-shadow:0 0 18px var(--orange);}
+
+    .title{
+      font-family:'Anton',sans-serif;font-size:64px;line-height:.95;letter-spacing:.5px;text-transform:uppercase;
+    }
+    .title span{background:linear-gradient(135deg,var(--yellow),var(--red));-webkit-background-clip:text;background-clip:text;color:transparent;}
+    .subtitle{color:var(--muted);font-size:17px;line-height:1.75;max-width:680px;}
+
+    header{position:absolute;top:0;left:0;width:100%;z-index:20;padding:24px 0;}
+    .nav{display:flex;align-items:center;justify-content:space-between;gap:24px;}
+    .brand{font-weight:950;letter-spacing:-.5px;font-size:18px;}
+    .brand span{color:var(--orange);}
+    .nav-links{display:flex;align-items:center;gap:26px;color:rgba(255,255,255,.62);font-size:13px;font-weight:800;}
+    .nav-links a:hover{color:white;}
+    .nav-cta{padding:12px 18px;border-radius:999px;background:white;color:#080808;font-size:12px;font-weight:950;text-transform:uppercase;letter-spacing:.9px;}
+
+    .hero{
+      min-height:100vh;display:flex;align-items:center;padding:120px 0 70px;
+      background:
+        radial-gradient(circle at 15% 18%,rgba(255,59,48,.18),transparent 34%),
+        radial-gradient(circle at 85% 18%,rgba(255,138,0,.16),transparent 30%),
+        linear-gradient(135deg,#050505 0%,#101010 48%,#070707 100%);
+    }
+    .hero::before{
+      content:"";position:absolute;inset:0;opacity:.1;
+      background-image:linear-gradient(rgba(255,255,255,.12) 1px, transparent 1px),linear-gradient(90deg,rgba(255,255,255,.12) 1px, transparent 1px);
+      background-size:48px 48px;
+      mask-image:linear-gradient(to bottom,black,transparent 90%);
+    }
+    .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:70px;align-items:center;position:relative;z-index:2;}
+    h1{font-family:'Anton',sans-serif;font-size:82px;line-height:.9;letter-spacing:.5px;text-transform:uppercase;margin-top:22px;max-width:760px;}
+    h1 span{background:linear-gradient(135deg,var(--yellow),var(--red));-webkit-background-clip:text;background-clip:text;color:transparent;}
+    .hero p{color:var(--muted);font-size:18px;line-height:1.75;margin-top:24px;max-width:630px;}
+    .hero-actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:34px;}
+
+    .hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:34px;max-width:660px;}
+    .stat{background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:22px;padding:18px;backdrop-filter:blur(12px);}
+    .stat strong{display:block;color:var(--yellow);font-weight:950;margin-bottom:6px;}
+    .stat span{color:rgba(255,255,255,.62);font-size:12.5px;line-height:1.45;display:block;}
+
+    .visual{position:relative;display:flex;justify-content:center;align-items:center;min-height:560px;}
+    .photo-card{position:relative;width:410px;border-radius:34px;overflow:hidden;border:1px solid rgba(255,255,255,.16);box-shadow:var(--shadow);background:#111;transform:rotate(2deg);}
+    .photo-card img{width:100%;aspect-ratio:4/5;object-fit:cover;object-position:center top;filter:saturate(1.05) contrast(1.05);}
+    .photo-card::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.72),transparent 55%);}
+    .photo-name{position:absolute;left:24px;right:24px;bottom:24px;z-index:3;}
+    .photo-name b{font-family:'Anton',sans-serif;font-size:32px;text-transform:uppercase;letter-spacing:.5px;display:block;}
+    .photo-name span{color:rgba(255,255,255,.72);font-size:13px;font-weight:700;}
+    .floating-offer{position:absolute;right:0;bottom:60px;z-index:5;background:white;color:#080808;border-radius:28px;padding:24px;width:260px;box-shadow:0 24px 70px rgba(0,0,0,.34);}
+    .floating-offer small{text-transform:uppercase;letter-spacing:1.5px;color:#777;font-weight:900;font-size:10px;}
+    .floating-offer strong{font-family:'Anton',sans-serif;font-size:46px;line-height:1;color:#080808;display:block;margin:6px 0;}
+    .floating-offer span{font-size:13px;line-height:1.5;color:#555;font-weight:700;}
+
+    .center{text-align:center;max-width:820px;margin:0 auto 54px;}
+    .center .title{margin-top:18px;}
+    .center .subtitle{margin:20px auto 0;}
+
+    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+    .card{background:rgba(255,255,255,.055);border:1px solid var(--line);border-radius:28px;padding:32px;box-shadow:0 20px 60px rgba(0,0,0,.16);transition:var(--transition);}
+    .card:hover{transform:translateY(-7px);background:rgba(255,255,255,.075);border-color:rgba(255,138,0,.35);}
+    .icon{width:54px;height:54px;border-radius:18px;background:rgba(255,138,0,.13);display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:24px;}
+    .card h3{font-size:23px;line-height:1.12;margin-bottom:12px;color:white;}
+    .card p{color:var(--muted);font-size:14.5px;line-height:1.65;}
+
+    .split{display:grid;grid-template-columns:.95fr 1.05fr;gap:70px;align-items:center;}
+    .panel{background:linear-gradient(145deg,#141414,#080808);border:1px solid var(--line);border-radius:34px;padding:32px;box-shadow:var(--shadow);}
+    .program-cover{min-height:420px;border-radius:26px;background:
+      radial-gradient(circle at 80% 15%,rgba(255,138,0,.35),transparent 30%),
+      linear-gradient(135deg,#0a0a0a,#1a1a1a);
+      border:1px solid rgba(255,255,255,.12);padding:36px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;position:relative;
+    }
+    .program-cover::before{content:"";position:absolute;width:230px;height:230px;border-radius:999px;background:rgba(255,59,48,.22);filter:blur(35px);right:-70px;bottom:-70px;}
+    .program-cover h2{font-family:'Anton',sans-serif;font-size:56px;line-height:.94;text-transform:uppercase;position:relative;z-index:2;}
+    .program-cover h2 span{color:var(--yellow);}
+    .program-cover p{color:rgba(255,255,255,.72);line-height:1.6;max-width:360px;position:relative;z-index:2;}
+    .checklist{display:grid;gap:14px;margin-top:28px;}
+    .check{display:flex;gap:12px;align-items:flex-start;color:var(--muted);line-height:1.55;font-size:15px;}
+    .check b{color:var(--orange);flex-shrink:0;}
+
+    .expert{background:#f4f4f4;color:#111;}
+    .expert .title{color:#111;}
+    .expert .subtitle{color:#555;}
+    .expert-box{display:grid;grid-template-columns:.75fr 1.25fr;gap:50px;align-items:center;background:white;border-radius:36px;padding:34px;box-shadow:0 30px 90px rgba(0,0,0,.12);}
+    .expert-photo{border-radius:30px;overflow:hidden;position:relative;background:#ddd;}
+    .expert-photo img{width:100%;aspect-ratio:4/5;object-fit:cover;object-position:center top;}
+    .expert-copy .tag{background:rgba(255,138,0,.12);color:#9a5200;border-color:rgba(255,138,0,.25);}
+    .expert-copy h2{margin-top:18px;}
+    .expert-copy p{margin-top:18px;color:#555;line-height:1.75;font-size:16px;}
+
+    .offer{background:linear-gradient(135deg,#111,#050505);}
+    .offer-box{display:grid;grid-template-columns:1.05fr .95fr;gap:34px;align-items:center;background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:38px;padding:42px;box-shadow:var(--shadow);}
+    .price{background:white;color:#080808;border-radius:30px;padding:32px;text-align:center;}
+    .price small{text-transform:uppercase;letter-spacing:2px;color:#777;font-size:11px;font-weight:950;}
+    .price strong{font-family:'Anton',sans-serif;font-size:68px;line-height:1;display:block;margin:10px 0;color:#080808;}
+    .price span{display:block;color:#555;font-weight:800;margin-bottom:22px;}
+
+    .faq{max-width:860px;margin:0 auto;}
+    details{background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:22px;margin-bottom:14px;overflow:hidden;}
+    summary{list-style:none;cursor:pointer;padding:22px 24px;font-weight:900;display:flex;justify-content:space-between;gap:20px;}
+    summary::-webkit-details-marker{display:none;}
+    summary::after{content:"+";color:var(--orange);font-size:24px;line-height:1;}
+    details[open] summary::after{content:"−";}
+    details p{padding:0 24px 24px;color:var(--muted);line-height:1.65;font-size:14.5px;}
+
+    footer{background:#050505;color:rgba(255,255,255,.5);padding:42px 0;font-size:13px;border-top:1px solid var(--line);}
+    .footer{display:flex;justify-content:space-between;gap:22px;align-items:center;}
+    .footer b{color:white;}
+
+    @media(max-width:1024px){
+      .nav-links{display:none;}
+      .hero{min-height:auto;text-align:center;padding-top:110px;}
+      .hero-grid,.split,.expert-box,.offer-box{grid-template-columns:1fr;gap:46px;}
+      .hero p,.subtitle{margin-left:auto;margin-right:auto;}
+      .hero-actions{justify-content:center;}
+      .hero-stats{margin-left:auto;margin-right:auto;}
+      .visual{order:-1;min-height:auto;}
+      .floating-offer{right:50%;transform:translateX(50%);bottom:-24px;}
+      .cards{grid-template-columns:1fr 1fr;}
+      h1{font-size:64px;}
+      .title{font-size:52px;}
+    }
+    @media(max-width:768px){
+      .container{padding:0 20px;}
+      section{padding:70px 0;}
+      header{padding:18px 0;}
+      .brand{font-size:16px;}
+      .nav-cta{font-size:10px;padding:10px 13px;}
+      h1{font-size:47px;}
+      .title{font-size:40px;}
+      .subtitle,.hero p{font-size:15.5px;}
+      .btn{width:100%;padding:17px 18px;font-size:11px;}
+      .hero-stats,.cards{grid-template-columns:1fr;}
+      .photo-card{width:100%;max-width:310px;}
+      .floating-offer{position:relative;right:auto;bottom:auto;transform:none;margin:-28px auto 0;}
+      .program-cover{min-height:340px;padding:26px;}
+      .program-cover h2{font-size:42px;}
+      .offer-box,.expert-box{padding:26px;border-radius:30px;}
+      .price strong{font-size:56px;}
+      .footer{flex-direction:column;text-align:center;}
+    }
+  </style>
+</head>
+<body>
+  <div class="noise"></div>
+
+  <header>
+    <div class="container">
+      <div class="nav">
+        <a href="#inicio" class="brand">Faiz Salim<span> Nutri</span></a>
+        <nav class="nav-links">
+          <a href="#metodo">Método</a>
+          <a href="#produto">Infoproduto</a>
+          <a href="#expert">Expert</a>
+          <a href="#duvidas">Dúvidas</a>
+        </nav>
+        <a class="nav-cta" href="https://l.instagram.com/?u=https%3A%2F%2Fwa.me%2Fmessage%2FIJMUYO7XA6NKG1%3Futm_source%3Dig%26utm_medium%3Dsocial%26utm_content%3Dlink_in_bio%26fbclid%3DPAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQPOTM2NjE5NzQzMzkyNDU5AAGn3w0xdltL4eopi78f2pq2xnbUGIDdQOsE1nEcysFLbnBAz_rAxxuptKThv8k_aem_mP4pre9lcKPkxd-f3NnRSQ&e=AUCTR8-JshXcVKIEMhfUdqwsmE4pM7Zu6Xj73WOq47DpYAfKLxVmdP3P8CWDt0c0wceV2pARudOG-qpGzbeYhqFrPH6oxZEddRsf8wyF-3zR6ZvdF3XnKZW1WJjLtJtRn338snkX1vaESILvmX7QJBQ">Começar agora</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="glow red" style="top:80px;left:-160px"></div>
+      <div class="glow orange" style="bottom:-120px;right:-140px"></div>
+      <div class="container">
+        <div class="hero-grid">
+          <div>
+            <span class="tag">Dieta flexível personalizada</span>
+            <h1>Coma o que gosta e perca <span>3 a 7kg por mês</span>.</h1>
+            <p>
+              Um acompanhamento com estratégia para quem quer emagrecer, ganhar forma e parar de viver preso em dieta impossível de manter.
+            </p>
+            <div class="hero-actions">
+              <a href="https://l.instagram.com/?u=https%3A%2F%2Fwa.me%2Fmessage%2FIJMUYO7XA6NKG1%3Futm_source%3Dig%26utm_medium%3Dsocial%26utm_content%3Dlink_in_bio%26fbclid%3DPAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQPOTM2NjE5NzQzMzkyNDU5AAGn3w0xdltL4eopi78f2pq2xnbUGIDdQOsE1nEcysFLbnBAz_rAxxuptKThv8k_aem_mP4pre9lcKPkxd-f3NnRSQ&e=AUCTR8-JshXcVKIEMhfUdqwsmE4pM7Zu6Xj73WOq47DpYAfKLxVmdP3P8CWDt0c0wceV2pARudOG-qpGzbeYhqFrPH6oxZEddRsf8wyF-3zR6ZvdF3XnKZW1WJjLtJtRn338snkX1vaESILvmX7QJBQ" class="btn">Quero começar agora</a>
+              <a href="#produto" class="btn secondary">Ver como funciona</a>
+            </div>
+            <div class="hero-stats">
+              <div class="stat"><strong>Sem modinha</strong><span>Estratégia real, sem dieta maluca.</span></div>
+              <div class="stat"><strong>Flexível</strong><span>Você aprende a comer melhor sem abrir mão de tudo.</span></div>
+              <div class="stat"><strong>Personalizado</strong><span>Direção para emagrecimento e resultado.</span></div>
+            </div>
+          </div>
+
+          <div class="visual">
+            <div class="photo-card">
+              <img src="expert.jpg" alt="Faiz Salim Nutricionista">
+              <div class="photo-name">
+                <b>Faiz Salim</b>
+                <span>Nutricionista • Dieta Flexível</span>
+              </div>
+            </div>
+            <div class="floating-offer">
+              <small>comece hoje</small>
+              <strong>3 a 7kg</strong>
+              <span>por mês com estratégia, consistência e acompanhamento.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="metodo">
+      <div class="container">
+        <div class="center">
+          <span class="tag">A lógica do método</span>
+          <h2 class="title">Resultado sem virar refém de <span>dieta restritiva</span>.</h2>
+          <p class="subtitle">A proposta é montar uma rotina alimentar possível, com escolhas inteligentes, flexibilidade e foco no que realmente gera evolução.</p>
+        </div>
+        <div class="cards">
+          <div class="card"><div class="icon">🔥</div><h3>Emagrecimento com estratégia</h3><p>Um caminho mais claro para reduzir peso sem depender de achismo, cortes extremos ou cardápio genérico.</p></div>
+          <div class="card"><div class="icon">🍕</div><h3>Coma o que gosta</h3><p>Dieta flexível para encaixar alimentos da sua rotina com mais controle, equilíbrio e consciência.</p></div>
+          <div class="card"><div class="icon">📈</div><h3>Constância no mundo real</h3><p>O foco é criar uma rotina que você consegue repetir, sem abandonar tudo no primeiro fim de semana.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="produto" style="background:#0d0d0d;">
+      <div class="container">
+        <div class="split">
+          <div class="panel">
+            <div class="program-cover">
+              <h2>Dieta<br><span>Flexível</span><br>Personalizada</h2>
+              <p>Um infoproduto/estrutura de orientação para você começar com direção, organização e estratégia.</p>
+            </div>
+          </div>
+          <div>
+            <span class="tag">Infoproduto + direção</span>
+            <h2 class="title" style="margin-top:18px;">Uma estrutura para sair do improviso.</h2>
+            <p class="subtitle" style="margin-top:20px;">Ideal para quem está cansado de tentar sozinho, começar várias dietas e não conseguir manter. Aqui o foco é clareza, execução e evolução.</p>
+            <div class="checklist">
+              <div class="check"><b>✓</b> Orientação para emagrecimento com dieta flexível.</div>
+              <div class="check"><b>✓</b> Estratégia alimentar mais prática e personalizada.</div>
+              <div class="check"><b>✓</b> Direção para perder peso sem viver de restrição.</div>
+              <div class="check"><b>✓</b> Comunicação direta, objetiva e focada em resultado.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="expert" id="expert">
+      <div class="container">
+        <div class="expert-box">
+          <div class="expert-photo">
+            <img src="expert.jpg" alt="Faiz Salim Nutricionista">
+          </div>
+          <div class="expert-copy">
+            <span class="tag">Quem vai te orientar</span>
+            <h2 class="title">Faiz Salim, nutricionista.</h2>
+            <p>
+              Nutricionista com posicionamento direto: sem dieta maluca, sem modinha e com resultado usando estratégia. Uma abordagem para quem quer emagrecer com mais liberdade e menos confusão.
+            </p>
+            <div class="checklist">
+              <div class="check"><b>✓</b> Dieta flexível e personalizada.</div>
+              <div class="check"><b>✓</b> Foco em emagrecimento e resultado.</div>
+              <div class="check"><b>✓</b> Estratégia para transformar sua rotina alimentar.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="offer" id="comprar">
+      <div class="container">
+        <div class="offer-box">
+          <div>
+            <span class="tag">Próximo passo</span>
+            <h2 class="title" style="margin-top:18px;">Comece sua mudança alimentar agora.</h2>
+            <p class="subtitle" style="margin-top:20px;">Clique no botão e fale diretamente pelo WhatsApp para iniciar sua estratégia com o Dr. Faiz Salim.</p>
+            <div class="checklist">
+              <div class="check"><b>✓</b> Para quem quer emagrecer com mais liberdade.</div>
+              <div class="check"><b>✓</b> Para quem quer parar com dietas impossíveis.</div>
+              <div class="check"><b>✓</b> Para quem busca direção e constância.</div>
+            </div>
+          </div>
+          <div class="price">
+            <small>Atendimento / orientação</small>
+            <strong>Agora</strong>
+            <span>fale no WhatsApp e veja o melhor caminho para você</span>
+            <a href="https://l.instagram.com/?u=https%3A%2F%2Fwa.me%2Fmessage%2FIJMUYO7XA6NKG1%3Futm_source%3Dig%26utm_medium%3Dsocial%26utm_content%3Dlink_in_bio%26fbclid%3DPAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQPOTM2NjE5NzQzMzkyNDU5AAGn3w0xdltL4eopi78f2pq2xnbUGIDdQOsE1nEcysFLbnBAz_rAxxuptKThv8k_aem_mP4pre9lcKPkxd-f3NnRSQ&e=AUCTR8-JshXcVKIEMhfUdqwsmE4pM7Zu6Xj73WOq47DpYAfKLxVmdP3P8CWDt0c0wceV2pARudOG-qpGzbeYhqFrPH6oxZEddRsf8wyF-3zR6ZvdF3XnKZW1WJjLtJtRn338snkX1vaESILvmX7QJBQ" class="btn">Falar com Faiz</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="duvidas">
+      <div class="container">
+        <div class="center">
+          <span class="tag">Dúvidas comuns</span>
+          <h2 class="title">Antes de começar</h2>
+        </div>
+        <div class="faq">
+          <details><summary>É uma dieta restritiva?</summary><p>Não. A proposta é trabalhar com dieta flexível, encaixando alimentos da rotina com estratégia e controle.</p></details>
+          <details><summary>Serve para quem já tentou várias dietas?</summary><p>Sim. A página foi pensada para quem já tentou métodos muito rígidos e precisa de um caminho mais sustentável.</p></details>
+          <details><summary>O atendimento é online?</summary><p>O link direciona para o WhatsApp, onde você pode confirmar o formato, disponibilidade e próximos passos.</p></details>
+          <details><summary>Preciso cortar tudo que gosto?</summary><p>Não. A comunicação do método é justamente perder peso comendo o que gosta, dentro de uma estratégia alimentar.</p></details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer">
+      <p><b>Faiz Salim Nutri</b> • Dieta flexível personalizada</p>
+      <p>© 2026 • Página profissional</p>
+    </div>
+  </footer>
+</body>
+</html>
